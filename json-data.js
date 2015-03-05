@@ -2,36 +2,31 @@
 // Get new text when clicking on "third"
 //
 $(document).ready(function() {
+	var about = "fuenlabrada";
+	var tags = "fuenlabrada";
+
+	$("#about").keyup(function(){
+		about = $(this).val();
+	});
+
+	$("#tags").keyup(function(){
+		tags = $(this).val();
+	});
+
 	$("#btn").click(function(){
-		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?tags=fuenlabrada&tagmode=any&format=json&jsoncallback=?";
+		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?tags=" + about + "&tagmode=any&format=json&jsoncallback=?";
 		$.getJSON( flickerAPI, {
-			tags: "fuenlabrada",
+			tags: tags,
 			tagmode: "any",
 			format: "json"
 		})
 		.done(function( data ) {
 			$.each( data.items, function( i, item ) {
-				$( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+				$( "#" + i ).attr( "src", item.media.m );
 				if ( i === 3 ) {
 					return false;
 				}
 			});
 		});
 	});
-	//Another way
-	/*$.ajax({
-		type:"GET",
-		dataType: "JSON",
-		url: "json-data.json",
-		cache: false,
-		success: function(data){
-			event(data);
-		}
-    });
-
-	var event = function(data){
-		$("#btn").click(function(){
-			$('#header').html('<h1>' + data.hi + '</h1>');
-		});
-	};*/
 });
